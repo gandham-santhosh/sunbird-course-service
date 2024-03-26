@@ -39,7 +39,7 @@ public class LearnerServiceUrls {
 
     for (Map.Entry<String, String[]> entry : inputMap.entrySet()) {
       if (entry.getKey().toLowerCase().startsWith("x-")
-          || entry.getKey().equalsIgnoreCase("Authorization")) {
+          || "Authorization".equalsIgnoreCase(entry.getKey())) {
         if (entry.getValue() != null) {
           outputMap.put(entry.getKey(), entry.getValue()[0]);
         }
