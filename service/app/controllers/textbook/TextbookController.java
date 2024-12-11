@@ -1,5 +1,7 @@
 package controllers.textbook;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import static org.sunbird.common.exception.ProjectCommonException.throwClientErrorException;
 
 import akka.actor.ActorRef;
@@ -83,7 +85,7 @@ public class TextbookController extends BaseController {
     String fileUrl = httpRequest.getQueryString(JsonKey.FILE_URL);
     if (StringUtils.isNotBlank(fileUrl)) {
       ProjectLogger.log("Got fileUrl from path parameter: " + fileUrl, LoggerEnum.INFO.name());
-      URL url = new URL(fileUrl.trim());
+      URL url = Urls.create(fileUrl.trim(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
       inputStream = url.openStream();
     } else {
       Http.MultipartFormData body = httpRequest.body().asMultipartFormData();
@@ -95,7 +97,7 @@ public class TextbookController extends BaseController {
             throwClientErrorException(
                 ResponseCode.csvError, ResponseCode.csvError.getErrorMessage());
           }
-          URL url = new URL(fileUrl.trim());
+          URL url = Urls.create(fileUrl.trim(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
           inputStream = url.openStream();
         } else {
           List<Http.MultipartFormData.FilePart<Files.TemporaryFile>> filePart = body.getFiles();
