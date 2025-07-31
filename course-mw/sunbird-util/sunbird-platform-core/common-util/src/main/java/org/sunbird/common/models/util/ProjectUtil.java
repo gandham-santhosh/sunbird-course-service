@@ -7,6 +7,7 @@ import com.google.i18n.phonenumbers.Phonenumber;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
+import java.security.SecureRandom;
 import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -308,7 +309,7 @@ public class ProjectUtil {
    * @return String
    */
   public static String getUniqueIdFromTimestamp(int environmentId) {
-    Random random = new Random();
+    Random random = new SecureRandom();
     long env = (environmentId + random.nextInt(99999)) / 10000000;
     long uid = System.currentTimeMillis() + random.nextInt(999999);
     uid = uid << 13;
@@ -708,7 +709,7 @@ public class ProjectUtil {
   public static String generateRandomPassword() {
     String SALTCHARS = "abcdef12345ghijklACDEFGHmnopqrs67IJKLMNOP890tuvQRSTUwxyzVWXYZ";
     StringBuilder salt = new StringBuilder();
-    Random rnd = new Random();
+    Random rnd = new SecureRandom();
     while (salt.length() < randomPasswordLength) { // length of the random string.
       int index = (int) (rnd.nextFloat() * SALTCHARS.length());
       salt.append(SALTCHARS.charAt(index));
